@@ -1,44 +1,28 @@
 import React from "react";
-import { useGraphqlData } from "../../hooks/fetchData";
 import BlouseItems from "./BlouseItems";
 import AddBlouse from "./AddBlouse";
-import Axios from "axios";
+import { useQuery } from "urql";
+import gql from "graphql-tag";
+
+export const BLOUSE_QUERY = gql`
+  {
+    blouses {
+      _id
+      title
+    }
+  }
+`;
 
 const Blouse = props => {
-  const [data, setData] = useGraphqlData({
-    query: `
-    {
-        blouses {
-            title
-            _id
-        }
-    }
-  `
-  });
+  const [result] = useQuery({ query: BLOUSE_QUERY });
 
-  const handleAddBlouse = async title => {
-    try {
-      const response = await Axios.post("/graphql", {
-        query: `
-        mutation {
-          addBlouse(blouseInput: {title: "${title}", deadline: "${new Date().toString()}"}) {
-            title
-            _id
-          }
-        }
-          `
-      });
-      setData([...data, response.data.data.addBlouse]);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  if (result.fetching) return <div>Fetching</div>;
 
   return (
     <div>
-      <AddBlouse handleAddBlouse={handleAddBlouse} />
+      <AddBlouse />
       <h1>Get Blouse Details</h1>
-      {data && <BlouseItems blouses={data} />}
+      <BlouseItems blouses={result.data.blouses} />
     </div>
   );
 };
