@@ -1,26 +1,41 @@
 {
   "name": "taylorapp",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A App For Taylors To Make Their Life Easy",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "server": "nodemon -r dotenv/config app.js",
+    "start": "node ./src/app.js",
+    "server": "nodemon  ./src/app.js",
     "client": "npm start --prefix clientweb",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "NODE_ENV=test  jest --runInBand"
   },
   "author": "Harshith",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-graphql": "^0.9.0",
     "graphql": "^14.6.0",
-    "mongoose": "^5.9.6"
+    "graphql-request": "^1.8.2",
+    "graphql-yoga": "^1.18.3",
+    "mongoose": "^5.9.6",
+    "request-promise": "^4.2.5"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
     "dotenv": "^8.2.0",
+    "jest": "^25.2.6",
     "nodemon": "^2.0.2"
+  },
+  "jest": {
+    "globalSetup": "./src/tests/test-setup.js",
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "clientweb/"
+    ]
   }
 }

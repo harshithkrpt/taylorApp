@@ -22,7 +22,7 @@ const cache = cacheExchange({
 });
 
 const client = new Client({
-  url: "http://localhost:8080/graphql",
+  url: "http://localhost:8080",
   exchanges: [dedupExchange, cache, fetchExchange]
 });
 
