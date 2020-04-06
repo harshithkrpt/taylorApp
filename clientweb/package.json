@@ -3,17 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "@urql/exchange-graphcache": "^2.3.0",
-    "axios": "^0.19.2",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-upload-client": "^13.0.0",
+    "firebase": "^7.13.2",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "urql": "^1.9.5"
+    "uuid": "^7.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

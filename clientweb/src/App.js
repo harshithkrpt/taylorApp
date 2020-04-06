@@ -1,6 +1,6 @@
 import React from "react";
-import Blouse from "./components/Blouse/Blouse";
 import "./App.css";
+import Blouse from "./components/Blouse/Blouse";
 
 function App() {
   return (

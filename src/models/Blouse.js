@@ -4,12 +4,16 @@ const BlouseSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     deadline: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    pictureUrl: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

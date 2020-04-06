@@ -1,6 +1,17 @@
+scalar Upload
+
+type Query {
+  blouses: [Blouse]!
+}
+
+type Mutation {
+  addBlouse(blouseInput: BlouseInput!): Blouse
+}
+
 type Blouse {
   title: String!
   _id: ID!
+  pictureUrl: String!
   deadline: String!
   createdAt: String!
   updatedAt: String!
@@ -9,12 +20,5 @@ type Blouse {
 input BlouseInput {
   title: String!
   deadline: String!
-}
-
-type Query {
-  blouses: [Blouse]!
-}
-
-type Mutation {
-  addBlouse(blouseInput: BlouseInput!): Blouse
+  picture: Upload!
 }

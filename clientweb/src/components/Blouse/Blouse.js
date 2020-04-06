@@ -1,30 +1,31 @@
-import React from "react";
-import BlouseItems from "./BlouseItems";
-import AddBlouse from "./AddBlouse";
-import { useQuery } from "urql";
-import gql from "graphql-tag";
+import React, { useState } from "react";
+import { storage } from "../../config/firebase";
 
-export const BLOUSE_QUERY = gql`
-  {
-    blouses {
-      _id
-      title
+export default (props) => {
+  const [picture, setPicture] = useState("");
+
+  const handlePictureChange = (e) => {
+    const image = e.target.files[0];
+    setPicture(image);
+  };
+
+  // Submit
+  const handleSubmit = async (e) => {
+    // TODO File Validations
+    console.log("Start of Upload");
+    console.log(picture.name);
+    const upload = storage.ref(`/image/${picture.name}`).put(picture);
+    try {
+      const snapshot = await upload.on("state_changed");
+      console.log(snapshot);
+    } catch (e) {
+      console.log(e);
     }
-  }
-`;
-
-const Blouse = props => {
-  const [result] = useQuery({ query: BLOUSE_QUERY });
-
-  if (result.fetching) return <div>Fetching</div>;
-
+  };
   return (
     <div>
-      <AddBlouse />
-      <h1>Get Blouse Details</h1>
-      <BlouseItems blouses={result.data.blouses} />
+      <input type="file" onChange={handlePictureChange} />
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 };
-
-export default Blouse;

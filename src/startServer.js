@@ -9,7 +9,7 @@ const cors = require("cors");
 const startServer = async () => {
   const server = new GraphQLServer({
     typeDefs: path.join(__dirname, "./graphql/schema/index.graphql"),
-    resolvers: resolvers
+    resolvers: resolvers,
   });
 
   if (process.env.NODE_ENV !== "test") {
