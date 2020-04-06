@@ -4,13 +4,11 @@ import "./index.css";
 import App from "./App";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { createUploadLink } from "apollo-upload-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
 
 const client = new ApolloClient({
-  link: createUploadLink({
-    uri: "http://localhost:8080",
-  }),
+  link: new HttpLink({ uri: "http://localhost:8080" }),
   cache: new InMemoryCache(),
 });
 

@@ -12,7 +12,6 @@ const BlouseSchema = new mongoose.Schema(
     },
     pictureUrl: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }

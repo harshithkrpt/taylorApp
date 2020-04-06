@@ -1,9 +1,6 @@
 require("dotenv/config");
-const path = require("path");
-const { startServer } = require("./startServer");
 
-// Firebase Config
-const firebase = require("./config/firebase");
+const { startServer } = require("./startServer");
 
 // Start The Server
 startServer();
