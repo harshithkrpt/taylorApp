@@ -1,8 +1,8 @@
 const { GraphQLServer } = require("graphql-yoga");
-const resolvers = require("./graphql/resolvers/index");
 const path = require("path");
 const bodyParser = require("body-parser");
 const dbProd = require("./config/db");
+const resolvers = require("./graphql/resolvers/index");
 const { databaseSetup } = require("./tests/utils/test-functions");
 const cors = require("cors");
 

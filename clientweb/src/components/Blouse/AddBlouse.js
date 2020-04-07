@@ -20,7 +20,7 @@ const ADD_BLOUSE = gql`
   }
 `;
 
-export default (props) => {
+const AddBlouse = (props) => {
   const [picture, setPicture] = useState("");
   const titleRef = useRef(null);
   const deadlineRef = useRef(null);
@@ -66,14 +66,14 @@ export default (props) => {
           .getDownloadURL();
       }
 
-      const response = await addBlouse({
+      await addBlouse({
         variables: {
           title: titleRef.current.value,
           deadline: deadlineRef.current.value,
           pictureUrl,
         },
       });
-      console.log(response);
+      props.history.push("/display_blouses");
     } catch (e) {
       console.log(e);
     }
@@ -89,3 +89,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default AddBlouse;
