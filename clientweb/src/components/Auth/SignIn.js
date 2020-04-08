@@ -6,7 +6,6 @@ const SignIn = (props) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  // Submit Input
   const handleSubmit = async (e) => {
     try {
       await auth().signInWithEmailAndPassword(

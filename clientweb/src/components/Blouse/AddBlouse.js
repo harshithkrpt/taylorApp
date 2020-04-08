@@ -6,16 +6,12 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 const ADD_BLOUSE = gql`
-  mutation($title: String!, $deadline: String!, $pictureUrl: String) {
+  mutation($title: String!, $deadline: String!, $image: String) {
     addBlouse(
-      blouseInput: {
-        title: $title
-        deadline: $deadline
-        pictureUrl: $pictureUrl
-      }
+      blouseInput: { title: $title, deadline: $deadline, image: $image }
     ) {
       _id
-      pictureUrl
+      image
     }
   }
 `;
@@ -52,7 +48,7 @@ const AddBlouse = (props) => {
     const unique = `${uuidv4()}-${picture.name}`;
     try {
       // Upload The File If Exists
-      let pictureUrl;
+      let image;
       if (picture) {
         await firebase
           .storage()
@@ -61,7 +57,7 @@ const AddBlouse = (props) => {
           .then((snapshot) => {
             console.log("File Uploaded");
           });
-        pictureUrl = await firebase
+        image = await firebase
           .storage()
           .ref("/blouse")
           .child(unique)
@@ -72,10 +68,9 @@ const AddBlouse = (props) => {
         variables: {
           title: titleRef.current.value,
           deadline: deadlineRef.current.value,
-          pictureUrl,
+          image,
         },
       });
-      props.history.push("/display_blouses");
     } catch (e) {
       console.log(e);
     }

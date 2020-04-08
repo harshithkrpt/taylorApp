@@ -4,26 +4,27 @@ type Query {
 
 type Mutation {
   addBlouse(blouseInput: BlouseInput!): Blouse!
+  deleteBlouse(_id: ID!): Boolean
+  updateBlouse(_id: ID!, updateBlouseInput: UpdateBlouseInput): Blouse
 }
 
 type Blouse {
   title: String!
   _id: ID!
-  pictureUrl: String
+  image: String
   deadline: String!
   createdAt: String!
   updatedAt: String!
 }
 
-input UserInput {
-  email: String!
-  password: String!
-  displayName: String!
-  photoURL: String
+input UpdateBlouseInput {
+  title: String
+  image: String
+  deadline: String
 }
 
 input BlouseInput {
   title: String!
   deadline: String!
-  pictureUrl: String
+  image: String
 }

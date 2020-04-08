@@ -11,15 +11,10 @@ const getAuthToken = (request) => {
 
 const isAuthenticated = async (request) => {
   const token = getAuthToken(request);
-  try {
-    const userInfo = await admin.auth().verifyIdToken(token);
-    // Store The UserID
-    request.authId = userInfo.uid;
 
-    return true;
-  } catch (e) {
-    console.log(e);
-  }
+  const userInfo = await admin.auth().verifyIdToken(token);
+  // Store The UserID
+  request.authId = userInfo.uid;
 };
 
 module.exports = { isAuthenticated };

@@ -10,7 +10,7 @@ const BlouseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    pictureUrl: {
+    image: {
       type: String,
     },
   },

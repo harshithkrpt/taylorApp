@@ -7,7 +7,7 @@ const GET_BLICE = gql`
     blouses {
       _id
       title
-      pictureUrl
+      image
     }
   }
 `;
@@ -26,9 +26,7 @@ function DisplayBlouse() {
           return (
             <div key={blouse._id}>
               <h4>{blouse.title}</h4>
-              {blouse.pictureUrl && (
-                <img alt={blouse._id} src={blouse.pictureUrl} />
-              )}
+              {blouse.image && <img alt={blouse._id} src={blouse.image} />}
             </div>
           );
         })}
