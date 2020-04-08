@@ -1,17 +1,11 @@
-const Blouse = require("../../models/Blouse");
+const { blouseQuery } = require("./Query/blouse");
+const { blouseMutation } = require("./Mutation/blouse");
 
 module.exports = {
   Query: {
-    blouses: async () => {
-      return await Blouse.find();
-    },
+    ...blouseQuery,
   },
   Mutation: {
-    addBlouse: async (_, args) => {
-      const newBlouse = new Blouse({ ...args.blouseInput });
-      newBlouse;
-      const data = await newBlouse.save();
-      return { ...data._doc, _id: data.id };
-    },
+    ...blouseMutation,
   },
 };

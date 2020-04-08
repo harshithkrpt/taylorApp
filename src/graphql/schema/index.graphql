@@ -15,6 +15,13 @@ type Blouse {
   updatedAt: String!
 }
 
+input UserInput {
+  email: String!
+  password: String!
+  displayName: String!
+  photoURL: String
+}
+
 input BlouseInput {
   title: String!
   deadline: String!

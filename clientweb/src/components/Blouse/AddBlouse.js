@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { storage } from "../../config/firebase";
+import firebase from "../../config/firebase";
 import { v4 as uuidv4 } from "uuid";
 import { isValidImage, isNotEmptyString } from "../../utils/validations";
 import { useMutation } from "@apollo/react-hooks";
@@ -21,7 +21,7 @@ const ADD_BLOUSE = gql`
 `;
 
 const AddBlouse = (props) => {
-  const [picture, setPicture] = useState("");
+  const [picture, setPicture] = useState(null);
   const titleRef = useRef(null);
   const deadlineRef = useRef(null);
 
@@ -54,13 +54,15 @@ const AddBlouse = (props) => {
       // Upload The File If Exists
       let pictureUrl;
       if (picture) {
-        await storage
+        await firebase
+          .storage()
           .ref(`/blouse/${unique}`)
           .put(picture)
           .then((snapshot) => {
             console.log("File Uploaded");
           });
-        pictureUrl = await storage
+        pictureUrl = await firebase
+          .storage()
           .ref("/blouse")
           .child(unique)
           .getDownloadURL();
