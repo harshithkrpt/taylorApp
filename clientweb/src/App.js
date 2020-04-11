@@ -1,38 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
-import AddBlouse from "./components/Blouse/AddBlouse";
+
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import DisplayBlouse from "./components/Blouse/DisplayBlouse";
+
 import NavBar from "./components/NavBar/NavBar";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
-import { useAuthValue } from "./context/AuthContext";
-import firebase from "./config/firebase";
-import { LOCAL_STORAGE_FIREBASE_KEY } from "./utils/constants";
 
-const onAuthStateChange = (setIsLogin) => {
-  firebase.auth().onAuthStateChanged((user) => {
-    console.log("Auth");
-    if (user) {
-      console.log("Login");
-      setIsLogin(true);
-    } else {
-      console.log("Not Logged In");
-      localStorage.removeItem(LOCAL_STORAGE_FIREBASE_KEY);
-      setIsLogin(false);
-    }
-  });
-};
+import DisplayBlouse from "./components/Blouse/DisplayBlouse";
+import AddBlouse from "./components/Blouse/AddBlouse";
+
+import { useAuthValue } from "./context/AuthContext";
 
 function App() {
-  const { isLogin, setIsLogin } = useAuthValue();
+  const { isLogin } = useAuthValue();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange(setIsLogin);
-    return () => {
-      unsubscribe();
-    };
-  }, [setIsLogin]);
   return (
     <BrowserRouter>
       <div>

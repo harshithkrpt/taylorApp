@@ -1,12 +1,28 @@
 const Blouse = require("../../../models/Blouse");
+const { createWriteStream } = require("fs");
+const path = require("path");
 
 const blouseMutation = {
-  addBlouse: async (_, args, { request }) => {
+  addBlouse: async (_, args, { req }) => {
     try {
-      if (!request.isAuth) {
+      if (!req.isAuth) {
         return null;
       }
-      const newBlouse = new Blouse({ ...args.blouseInput });
+      let imageName;
+      if (args.blouseInput.image) {
+        const { createReadStream, filename } = await args.blouseInput.image;
+        imageName = filename;
+        await new Promise((res) =>
+          createReadStream().pipe(
+            createWriteStream(path.join(__dirname, "images", filename)).on(
+              "close",
+              res
+            )
+          )
+        );
+      }
+
+      const newBlouse = new Blouse({ ...args.blouseInput, image: imageName });
       const data = await newBlouse.save();
       return { ...data._doc, _id: data.id };
     } catch (e) {
@@ -14,9 +30,9 @@ const blouseMutation = {
       return null;
     }
   },
-  deleteBlouse: async (_, { _id }, { request }) => {
+  deleteBlouse: async (_, { _id }, { req }) => {
     try {
-      if (!request.isAuth) {
+      if (!req.isAuth) {
         return null;
       }
       const res = await Blouse.findByIdAndDelete(_id);
@@ -29,9 +45,9 @@ const blouseMutation = {
       return null;
     }
   },
-  updateBlouse: async (_, args, { request }) => {
+  updateBlouse: async (_, args, { req }) => {
     try {
-      if (!request.isAuth) {
+      if (!req.isAuth) {
         return null;
       }
       const { _id, updateBlouseInput } = args;
@@ -39,7 +55,6 @@ const blouseMutation = {
       const doc = await Blouse.findByIdAndUpdate({ _id }, updateBlouseInput, {
         new: true,
       });
-      console.log(doc);
       return doc;
     } catch (e) {
       console.log(e);

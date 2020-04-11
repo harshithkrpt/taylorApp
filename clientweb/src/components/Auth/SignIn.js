@@ -1,19 +1,39 @@
 import React, { useRef } from "react";
-import firebase, { auth } from "../../config/firebase";
-import { LOCAL_STORAGE_FIREBASE_KEY } from "../../utils/constants";
+import { LOCAL_STORAGE_TOKEN } from "../../utils/constants";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import { useAuthValue } from "../../context/AuthContext";
+
+const SIGN_IN = gql`
+  mutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+      error {
+        path
+        msg
+      }
+    }
+  }
+`;
 
 const SignIn = (props) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const [login] = useMutation(SIGN_IN);
+  const { setIsLogin } = useAuthValue();
 
   const handleSubmit = async (e) => {
     try {
-      await auth().signInWithEmailAndPassword(
-        emailRef.current.value,
-        passwordRef.current.value
-      );
-      const token = await firebase.auth().currentUser.getIdToken();
-      localStorage.setItem(LOCAL_STORAGE_FIREBASE_KEY, token);
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const response = await login({ variables: { email, password } });
+      const { data } = response;
+      if (data.login.error) {
+        throw new Error(data.login.error.msg);
+      }
+      // Store to local storage
+      setIsLogin(true);
+      localStorage.setItem(LOCAL_STORAGE_TOKEN, data.login.token);
     } catch (e) {
       console.log(e);
     }
@@ -21,8 +41,8 @@ const SignIn = (props) => {
 
   return (
     <div>
-      <input type="text" ref={emailRef} />
-      <input type="password" ref={passwordRef} />
+      <input type="text" placeholder="Email" ref={emailRef} />
+      <input type="password" placeholder="Password" ref={passwordRef} />
       <button onClick={handleSubmit}>SignIn</button>
     </div>
   );

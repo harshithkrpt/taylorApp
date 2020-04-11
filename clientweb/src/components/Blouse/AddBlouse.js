@@ -1,17 +1,15 @@
 import React, { useState, useRef } from "react";
-import firebase from "../../config/firebase";
-import { v4 as uuidv4 } from "uuid";
-import { isValidImage, isNotEmptyString } from "../../utils/validations";
+// import { v4 as uuidv4 } from "uuid";
+import { isNotEmptyString } from "../../utils/validations";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 const ADD_BLOUSE = gql`
-  mutation($title: String!, $deadline: String!, $image: String) {
+  mutation($title: String!, $deadline: String!, $image: Upload) {
     addBlouse(
       blouseInput: { title: $title, deadline: $deadline, image: $image }
     ) {
       _id
-      image
     }
   }
 `;
@@ -40,35 +38,15 @@ const AddBlouse = (props) => {
       return;
     }
 
-    if (!isValidImage(picture.size)) {
-      console.log("Image Size Should Be Less Than 4MB");
-      return;
-    }
-
-    const unique = `${uuidv4()}-${picture.name}`;
+    // const unique = `${uuidv4()}-${picture.name}`;
     try {
       // Upload The File If Exists
-      let image;
-      if (picture) {
-        await firebase
-          .storage()
-          .ref(`/blouse/${unique}`)
-          .put(picture)
-          .then((snapshot) => {
-            console.log("File Uploaded");
-          });
-        image = await firebase
-          .storage()
-          .ref("/blouse")
-          .child(unique)
-          .getDownloadURL();
-      }
-
+      console.log(picture);
       await addBlouse({
         variables: {
           title: titleRef.current.value,
           deadline: deadlineRef.current.value,
-          image,
+          image: picture,
         },
       });
     } catch (e) {

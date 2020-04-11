@@ -1,20 +1,24 @@
-const { GraphQLServer } = require("graphql-yoga");
-const path = require("path");
+const { ApolloServer } = require("apollo-server-express");
+const express = require("express");
 const bodyParser = require("body-parser");
 const dbProd = require("./config/db");
-const resolvers = require("./graphql/resolvers");
+
 const { databaseSetup } = require("./tests/utils/test-functions");
 const cors = require("cors");
 const isAuth = require("./middleware/isAuth");
+const typeDefs = require("./graphql/schema");
+const resolvers = require("./graphql/resolvers");
 
 const startServer = async () => {
   // Server Setup
-  const server = new GraphQLServer({
-    typeDefs: path.join(__dirname, "./graphql/schema/index.graphql"),
+  const app = express();
+  const server = new ApolloServer({
+    typeDefs,
     resolvers: resolvers,
-    context: async ({ request }) => {
+    context: async ({ req }) => {
       // Request Header Validate Token
-      return { request };
+
+      return { req };
     },
   });
 
@@ -26,15 +30,16 @@ const startServer = async () => {
   }
 
   // TODO  CORS SETUP FOR ONLY SELECTED FRONTEND
-  server.express.use(cors({ origin: true }));
+  app.use(cors({ origin: true }));
 
-  server.express.use(isAuth);
+  app.use(isAuth);
   // Body Parser
-  server.express.use(bodyParser.json());
+  app.use(bodyParser.json());
 
+  server.applyMiddleware({ app });
   // Server Started
-  const app = await server.start({ port: 8080 }, () => {
-    console.log("The server is running on http://localhost:8080");
+  app.listen(process.env.PORT, () => {
+    console.log(`Server Started At PORT ${process.env.PORT}`);
   });
 
   return app;

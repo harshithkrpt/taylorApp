@@ -1,13 +1,13 @@
 import React from "react";
+import { LOCAL_STORAGE_TOKEN } from "../../utils/constants";
+import { useAuthValue } from "../../context/AuthContext";
 
-import { auth } from "../../config/firebase";
 const SignOut = (props) => {
+  const { setIsLogin } = useAuthValue();
   const handleSignout = async (e) => {
-    try {
-      await auth().signOut();
-    } catch (err) {
-      console.log(err);
-    }
+    // TODO Remove State if ANY
+    setIsLogin(false);
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN);
   };
 
   return <button onClick={handleSignout}>Signout</button>;

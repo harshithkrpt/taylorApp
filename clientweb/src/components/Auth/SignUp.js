@@ -1,20 +1,41 @@
 import React, { useRef } from "react";
-import firebase, { auth } from "../../config/firebase";
-import { LOCAL_STORAGE_FIREBASE_KEY } from "../../utils/constants";
+import { LOCAL_STORAGE_TOKEN } from "../../utils/constants";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import { useAuthValue } from "../../context/AuthContext";
 
-const SignIn = (props) => {
+const SIGN_UP = gql`
+  mutation($name: String!, $email: String!, $password: String!) {
+    signUp(userInput: { name: $name, email: $email, password: $password }) {
+      token
+      error {
+        path
+        msg
+      }
+    }
+  }
+`;
+
+const SignUp = (props) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const nameRef = useRef(null);
+  const [signup] = useMutation(SIGN_UP);
+  const { setIsLogin } = useAuthValue();
 
-  // Submit Input
   const handleSubmit = async (e) => {
     try {
-      await auth().createUserWithEmailAndPassword(
-        emailRef.current.value,
-        passwordRef.current.value
-      );
-      const token = await firebase.auth().currentUser.getIdToken();
-      localStorage.setItem(LOCAL_STORAGE_FIREBASE_KEY, token);
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const name = nameRef.current.value;
+      const response = await signup({ variables: { email, password, name } });
+      const { data } = response;
+      if (data.signUp.error) {
+        throw new Error(data.signUp.error.msg);
+      }
+      // Store to local storage
+      setIsLogin(true);
+      localStorage.setItem(LOCAL_STORAGE_TOKEN, data.signUp.token);
     } catch (e) {
       console.log(e);
     }
@@ -22,13 +43,12 @@ const SignIn = (props) => {
 
   return (
     <div>
-      <h1>Sign UP</h1>
-      <input placeholder="Email" type="text" ref={emailRef} />
-      <input placeholder="Password" type="password" ref={passwordRef} />
-
+      <input type="text" placeholder="Name" ref={nameRef} />
+      <input type="text" placeholder="Email" ref={emailRef} />
+      <input type="password" placeholder="Password" ref={passwordRef} />
       <button onClick={handleSubmit}>SignUp</button>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;
