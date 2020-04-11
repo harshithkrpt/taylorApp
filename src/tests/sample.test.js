@@ -1,13 +1,11 @@
 const { databaseCleanUp, databaseSetup } = require("./utils/test-functions");
 const { request } = require("graphql-request");
 
-beforeAll(async () => {
-  await databaseSetup();
-});
+const title = "This is a Test Title";
+const deadline = new Date().toString();
 
-test("Testing", async () => {
+test("Add Blouse With Title and Deadline", async () => {
   const query = `
-
     mutation AddBlouse($title: String!,$deadline: String!){
       addBlouse(blouseInput:{title:$title,deadline:$deadline}) {
         _id
@@ -17,11 +15,9 @@ test("Testing", async () => {
     }
   `;
 
-  const title = "This is a Test Title";
-  const deadline = new Date().toString();
   const resposne = await request("http://localhost:8080", query, {
     title,
-    deadline
+    deadline,
   });
 
   expect(resposne.addBlouse.title).toBe(title);

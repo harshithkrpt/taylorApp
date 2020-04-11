@@ -5,7 +5,6 @@ const dbProd = require("./config/db");
 const resolvers = require("./graphql/resolvers/index");
 const { databaseSetup } = require("./tests/utils/test-functions");
 const cors = require("cors");
-const { getAuthToken, isAuthenticated } = require("./helpers/auth");
 
 const startServer = async () => {
   // Server Setup
