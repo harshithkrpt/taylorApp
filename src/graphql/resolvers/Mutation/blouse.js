@@ -1,11 +1,11 @@
-const { isAuthenticated } = require("../../../helpers/auth");
 const Blouse = require("../../../models/Blouse");
 
 const blouseMutation = {
   addBlouse: async (_, args, { request }) => {
     try {
-      await isAuthenticated(request);
-
+      if (!request.isAuth) {
+        return null;
+      }
       const newBlouse = new Blouse({ ...args.blouseInput });
       const data = await newBlouse.save();
       return { ...data._doc, _id: data.id };
@@ -16,8 +16,9 @@ const blouseMutation = {
   },
   deleteBlouse: async (_, { _id }, { request }) => {
     try {
-      await isAuthenticated(request);
-
+      if (!request.isAuth) {
+        return null;
+      }
       const res = await Blouse.findByIdAndDelete(_id);
       if (res != null) {
         return true;
@@ -30,7 +31,9 @@ const blouseMutation = {
   },
   updateBlouse: async (_, args, { request }) => {
     try {
-      await isAuthenticated(request);
+      if (!request.isAuth) {
+        return null;
+      }
       const { _id, updateBlouseInput } = args;
 
       const doc = await Blouse.findByIdAndUpdate({ _id }, updateBlouseInput, {

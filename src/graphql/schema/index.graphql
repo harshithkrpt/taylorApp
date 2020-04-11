@@ -3,9 +3,21 @@ type Query {
 }
 
 type Mutation {
+  login(email: String!, password: String!): AuthResponse!
+  signUp(userInput: UserInput): AuthResponse!
   addBlouse(blouseInput: BlouseInput!): Blouse!
   deleteBlouse(_id: ID!): Boolean
   updateBlouse(_id: ID!, updateBlouseInput: UpdateBlouseInput): Blouse
+}
+
+type AuthResponse {
+  token: String
+  error: Error
+}
+
+type Error {
+  msg: String!
+  path: String!
 }
 
 type Blouse {
@@ -27,4 +39,10 @@ input BlouseInput {
   title: String!
   deadline: String!
   image: String
+}
+
+input UserInput {
+  name: String!
+  email: String!
+  password: String!
 }

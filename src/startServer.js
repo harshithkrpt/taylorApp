@@ -2,9 +2,10 @@ const { GraphQLServer } = require("graphql-yoga");
 const path = require("path");
 const bodyParser = require("body-parser");
 const dbProd = require("./config/db");
-const resolvers = require("./graphql/resolvers/index");
+const resolvers = require("./graphql/resolvers");
 const { databaseSetup } = require("./tests/utils/test-functions");
 const cors = require("cors");
+const isAuth = require("./middleware/isAuth");
 
 const startServer = async () => {
   // Server Setup
@@ -27,6 +28,7 @@ const startServer = async () => {
   // TODO  CORS SETUP FOR ONLY SELECTED FRONTEND
   server.express.use(cors({ origin: true }));
 
+  server.express.use(isAuth);
   // Body Parser
   server.express.use(bodyParser.json());
 
