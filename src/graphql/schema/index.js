@@ -1,8 +1,11 @@
-const { gql } = require("apollo-server-express");
+const {
+  gql
+} = require("apollo-server-express");
 
-module.exports = gql`
+module.exports = gql `
   type Query {
     blouses: [Blouse]!
+    getOwner(_id:ID!): Owner
   }
 
   type Mutation {
@@ -11,6 +14,23 @@ module.exports = gql`
     addBlouse(blouseInput: BlouseInput!): Blouse!
     deleteBlouse(_id: ID!): Boolean
     updateBlouse(_id: ID!, updateBlouseInput: UpdateBlouseInput): Blouse
+    addOwner(ownerInput: OwnerInput!): Owner!
+    addMeasurement(_id:ID!,measurementInput: MeasurementInput!): Measurement!
+  }
+
+  type Measurement {
+    _id: ID!
+    neckSize: Int!
+    handSize: Int!
+    waistSize: Int!
+  }
+
+  type Owner {
+    _id: ID!
+    name: String!
+    email: String
+    phoneNo: String!
+    measurementId: ID
   }
 
   type AuthResponse {
@@ -31,6 +51,18 @@ module.exports = gql`
     createdAt: String!
     updatedAt: String!
   }
+
+  input MeasurementInput {
+    neckSize: Int!
+    handSize: Int!
+    waistSize: Int!
+  }
+
+  input OwnerInput {
+    name: String!
+    email: String
+    phoneNo: String!
+  } 
 
   input UpdateBlouseInput {
     title: String
