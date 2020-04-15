@@ -35,6 +35,23 @@ const measurementMutation = {
       return null;
     }
   },
+  updateMeasurement: async (_, { _id, measurementInput }) => {
+    try {
+      const measurement = await Measurement.findOneAndUpdate(
+        { _id },
+        measurementInput,
+        { new: true }
+      );
+      console.log(measurement._doc);
+      return {
+        ...measurement._doc,
+        _id: measurement.id,
+      };
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  },
 };
 
 module.exports = {

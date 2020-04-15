@@ -14,6 +14,15 @@ const itemMutation = {
       return false;
     }
   },
+  updateItem: async (_, { _id, itemInput }) => {
+    try {
+      await Item.findByIdAndUpdate({ _id }, { ...itemInput });
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  },
 };
 
 module.exports = {

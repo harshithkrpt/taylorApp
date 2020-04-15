@@ -25,30 +25,21 @@ module.exports = gql`
 
     # Customer Measurement
     addMeasurement(_id: ID!, measurementInput: MeasurementInput!): Measurement!
+    updateMeasurement(
+      _id: ID!
+      measurementInput: UpdatedMeasurementInput!
+    ): Measurement!
 
     # Item
     addItem(itemInput: ItemInput): Boolean
+    updateItem(_id: ID, itemInput: UpdateItemInput): Boolean
 
     # Item Date
     addItemDate(receivedDate: String!, returnDate: String!): Boolean
 
     # Item Type
     addItemType(itemTypeInput: ItemTypeInput): Boolean
-  }
-
-  input ItemInput {
-    title: String
-    description: String
-    imageUrl: [String!]
-    userId: ID
-    itemDateId: ID
-    itemTypeId: ID
-    ownerId: ID
-  }
-
-  input ItemTypeInput {
-    name: String!
-    price: Int!
+    updateItemType(_id: ID!, itemTypeInput: UpdatedItemTypeInput): Boolean
   }
 
   type Measurement {
@@ -121,5 +112,41 @@ module.exports = gql`
     name: String!
     email: String!
     password: String!
+  }
+
+  input UpdateItemInput {
+    title: String
+    description: String
+    imageUrl: [String!]
+    userId: ID
+    itemDateId: ID
+    itemTypeId: ID
+    ownerId: ID
+  }
+
+  input UpdatedMeasurementInput {
+    neckSize: Int
+    handSize: Int
+    waistSize: Int
+  }
+
+  input ItemInput {
+    title: String
+    description: String
+    imageUrl: [String!]
+    userId: ID
+    itemDateId: ID
+    itemTypeId: ID
+    ownerId: ID
+  }
+
+  input ItemTypeInput {
+    name: String!
+    price: Int!
+  }
+
+  input UpdatedItemTypeInput {
+    name: String
+    price: Int
   }
 `;

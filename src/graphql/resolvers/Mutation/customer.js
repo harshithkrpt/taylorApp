@@ -26,6 +26,7 @@ const customerMutation = {
   },
   deleteCustomer: async (_, { _id }) => {
     try {
+      // TODO DELETE THE MEASUREMENTS TOO
       await Customer.findByIdAndDelete({ _id });
       return true;
     } catch (e) {
