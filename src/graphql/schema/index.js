@@ -1,21 +1,54 @@
-const {
-  gql
-} = require("apollo-server-express");
+const { gql } = require("apollo-server-express");
 
-module.exports = gql `
+module.exports = gql`
   type Query {
     blouses: [Blouse]!
-    getOwner(_id:ID!): Owner
+    # Customer
+    getCustomer(userId: ID!, searchTerm: String, customerId: ID): Customer!
   }
 
   type Mutation {
+    # Authentication
     login(email: String!, password: String!): AuthResponse!
     signUp(userInput: UserInput): AuthResponse!
+    revokeRefreshTokensForUsers(userId: String!): Boolean
+    logout: Boolean
+    # Blouses
     addBlouse(blouseInput: BlouseInput!): Blouse!
     deleteBlouse(_id: ID!): Boolean
     updateBlouse(_id: ID!, updateBlouseInput: UpdateBlouseInput): Blouse
-    addOwner(ownerInput: OwnerInput!): Owner!
-    addMeasurement(_id:ID!,measurementInput: MeasurementInput!): Measurement!
+
+    # Customer
+    addCustomer(customerInput: CustomerInput!): Customer!
+    deleteCustomer(_id: ID!): Boolean
+    updateCustomer(_id: ID!, customerInput: UpdatedCustomerInput): Customer!
+
+    # Customer Measurement
+    addMeasurement(_id: ID!, measurementInput: MeasurementInput!): Measurement!
+
+    # Item
+    addItem(itemInput: ItemInput): Boolean
+
+    # Item Date
+    addItemDate(receivedDate: String!, returnDate: String!): Boolean
+
+    # Item Type
+    addItemType(itemTypeInput: ItemTypeInput): Boolean
+  }
+
+  input ItemInput {
+    title: String
+    description: String
+    imageUrl: [String!]
+    userId: ID
+    itemDateId: ID
+    itemTypeId: ID
+    ownerId: ID
+  }
+
+  input ItemTypeInput {
+    name: String!
+    price: Int!
   }
 
   type Measurement {
@@ -25,9 +58,10 @@ module.exports = gql `
     waistSize: Int!
   }
 
-  type Owner {
+  type Customer {
     _id: ID!
     name: String!
+    userId: ID!
     email: String
     phoneNo: String!
     measurementId: ID
@@ -58,11 +92,18 @@ module.exports = gql `
     waistSize: Int!
   }
 
-  input OwnerInput {
+  input CustomerInput {
     name: String!
     email: String
     phoneNo: String!
-  } 
+    userId: ID
+  }
+
+  input UpdatedCustomerInput {
+    name: String
+    email: String
+    phoneNo: String
+  }
 
   input UpdateBlouseInput {
     title: String

@@ -1,31 +1,25 @@
-const {
-  blouseQuery
-} = require("./Query/blouse");
-const {
-  blouseMutation
-} = require("./Mutation/blouse");
-const {
-  authMutation
-} = require("../resolvers/Mutation/auth");
-const {
-  ownerMutation
-} = require('../resolvers/Mutation/owner');
-const {
-  measurementMutation
-} = require('../resolvers/Mutation/measurement')
-const {
-  ownerQuery
-} = require('../resolvers/Query/owner')
+const { blouseQuery } = require("./Query/blouse");
+const { blouseMutation } = require("./Mutation/blouse");
+const { authMutation } = require("../resolvers/Mutation/auth");
+const { customerMutation } = require("../resolvers/Mutation/customer");
+const { measurementMutation } = require("../resolvers/Mutation/measurement");
+const { customerQuery } = require("../resolvers/Query/customer");
+const { itemTypeMutation } = require("../resolvers/Mutation/item-type");
+const { itemDateMutation } = require("../resolvers/Mutation/item-date");
+const { itemMutation } = require("../resolvers/Mutation/item");
 
 module.exports = {
   Query: {
     ...blouseQuery,
-    ...ownerQuery
+    ...customerQuery,
   },
   Mutation: {
     ...authMutation,
     ...blouseMutation,
-    ...ownerMutation,
-    ...measurementMutation
+    ...customerMutation,
+    ...measurementMutation,
+    ...itemTypeMutation,
+    ...itemDateMutation,
+    ...itemMutation,
   },
 };

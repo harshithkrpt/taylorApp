@@ -1,19 +1,20 @@
 const mongoose = require("mongoose");
 
-const {
-  Schema
-} = mongoose;
+const { Schema } = mongoose;
 
 const ItemSchema = new Schema({
   title: {
+    unique: true,
     type: String,
   },
   description: {
     type: String,
   },
-  imageUrl: [{
-    type: String
-  }],
+  imageUrl: [
+    {
+      type: String,
+    },
+  ],
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",

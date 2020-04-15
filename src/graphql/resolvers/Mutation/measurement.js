@@ -1,49 +1,42 @@
-const Measurement = require('../../../models/Measurement');
-const Owner = require('../../../models/Owner');
+const Measurement = require("../../../models/Measurement");
+const Customer = require("../../../models/Customer");
 
 const measurementMutation = {
-    addMeasurement: async (_, {
-        measurementInput,
-        _id
-    }) => {
-        try {
+  addMeasurement: async (_, { measurementInput, _id }) => {
+    try {
+      const customer = await Customer.findOne({
+        _id,
+      });
 
-            console.log(_id);
-            const owner = await Owner.findOne({
-                _id
-            })
+      if (!customer) {
+        throw new Error("Customer Does Not Exists");
+      }
 
-            if (!owner) {
-                throw new Error("Owner Does Not Exists");
-            }
+      if (customer.measurementId) {
+        throw new Error("Measurement Already Exists");
+      }
 
-            if (owner.measurementId) {
-                throw new Error("Measurement Already Exists");
-            }
+      let newMeasurement = new Measurement({
+        ...measurementInput,
+      });
 
-            let newMeasurement = new Measurement({
-                ...measurementInput
-            });
+      newMeasurement = await newMeasurement.save();
+      // Connect customer With Measurement
+      customer.measurementId = newMeasurement.id;
 
+      await customer.save();
 
-            newMeasurement = await newMeasurement.save();
-            // Connect Owner With Measurement
-            owner.measurementId = newMeasurement.id;
-
-            await owner.save()
-
-            return {
-                _id: newMeasurement.id,
-                ...newMeasurement._doc
-            };
-
-        } catch (e) {
-            console.log(e);
-            return null;
-        }
+      return {
+        _id: newMeasurement.id,
+        ...newMeasurement._doc,
+      };
+    } catch (e) {
+      console.log(e);
+      return null;
     }
-}
+  },
+};
 
 module.exports = {
-    measurementMutation
-}
+  measurementMutation,
+};

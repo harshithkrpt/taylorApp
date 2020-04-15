@@ -1,9 +1,14 @@
 const User = require("../../../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const {
+  sendRefreshToken,
+  createAccessToken,
+  createRefreshToken,
+} = require("../../../utils/auth");
 
 exports.authMutation = {
-  login: async (_, { email, password }) => {
+  login: async (_, { email, password }, { res }) => {
     try {
       // Check If Email Exists
       const user = await User.findOne({ email });
@@ -28,22 +33,15 @@ exports.authMutation = {
       }
 
       // Return Token
-      const token = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_AUTH_SECRET,
-        {
-          expiresIn: "1h",
-        }
-      );
+      //  Login Sucessful
+      sendRefreshToken(res, createRefreshToken(user));
 
-      return {
-        token,
-      };
+      return createAccessToken(user);
     } catch (e) {
       console.log("Error", e);
     }
   },
-  signUp: async (_, { userInput }) => {
+  signUp: async (_, { userInput }, { res }) => {
     try {
       // TODO Verify The Email and Password Length
       // Create an Instance of User
@@ -53,18 +51,9 @@ exports.authMutation = {
       // Save To Database
       await user.save();
 
-      // Return Token
-      const token = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_AUTH_SECRET,
-        {
-          expiresIn: "1h",
-        }
-      );
+      sendRefreshToken(res, createRefreshToken(user));
 
-      return {
-        token,
-      };
+      return createAccessToken(user);
     } catch (e) {
       console.log("SignUp", e);
       return {
@@ -73,6 +62,24 @@ exports.authMutation = {
           msg: "Email Exists",
         },
       };
+    }
+  },
+  logout: (_, __, { res }) => {
+    // Auth CheckUp
+    sendRefreshToken(res, "");
+    return true;
+  },
+  revokeRefreshTokensForUsers: async (_, { userId }) => {
+    // Auth CheckUp
+    try {
+      const user = await User.findOne({ _id: userId });
+      console.log(user);
+      user.tokenVersion++;
+      await user.save();
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
     }
   },
 };

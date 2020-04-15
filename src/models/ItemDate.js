@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
 
-const { Schema } = mongoose;
+const {
+  Schema
+} = mongoose;
 
 const ItemDateSchema = new Schema({
-  receivedAt: {
+  receivedDate: {
     type: Schema.Types.Date,
     required: true,
   },
-  returnAt: {
+  returnDate: {
     type: Schema.Types.Date,
     required: true,
   },

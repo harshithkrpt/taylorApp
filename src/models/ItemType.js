@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 
-const { Schema } = mongoose;
+const {
+  Schema
+} = mongoose;
 
 const ItemTypeSchema = new Schema({
   name: {
     required: true,
     type: String,
+    unique: true,
+    trim: true
   },
   price: {
-    type: Float32Array,
+    type: Number,
     required: true,
   },
 });
