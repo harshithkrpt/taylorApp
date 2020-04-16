@@ -21,7 +21,7 @@ const startServer = async () => {
   const app = express();
 
   // TODO  CORS SETUP FOR ONLY SELECTED FRONTEND
-  app.use(cors({ origin: true }));
+  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
   app.use(cookieParser());
   // Body Parser
   app.use(bodyParser.json());
@@ -73,7 +73,7 @@ const startServer = async () => {
     },
   });
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, cors: false });
   // Server Started
   app.listen(process.env.PORT, () => {
     console.log(`Server Started At PORT ${process.env.PORT}`);

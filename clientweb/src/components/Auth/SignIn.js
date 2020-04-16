@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { LOCAL_STORAGE_TOKEN } from "../../utils/constants";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useAuthValue } from "../../context/AuthContext";
+import { setAccessToken } from "../../context/accessToken";
 
 const SIGN_IN = gql`
   mutation($email: String!, $password: String!) {
@@ -33,7 +33,7 @@ const SignIn = (props) => {
       }
       // Store to local storage
       setIsLogin(true);
-      localStorage.setItem(LOCAL_STORAGE_TOKEN, data.login.token);
+      setAccessToken(data.login.token);
     } catch (e) {
       console.log(e);
     }

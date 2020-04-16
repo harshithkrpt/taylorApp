@@ -1,41 +1,37 @@
-import React from "react";
-import "./App.css";
-
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
-import NavBar from "./components/NavBar/NavBar";
-import SignIn from "./components/Auth/SignIn";
-import SignUp from "./components/Auth/SignUp";
-
-import DisplayBlouse from "./components/Blouse/DisplayBlouse";
-import AddBlouse from "./components/Blouse/AddBlouse";
-
+import React, { useState, useEffect } from "react";
+import Routes from "./Routes";
+import { setAccessToken } from "./context/accessToken";
 import { useAuthValue } from "./context/AuthContext";
+const App = () => {
+  const [loading, setLoading] = useState(false);
+  const { setIsLogin } = useAuthValue();
+  useEffect(() => {
+    setLoading(true);
+    fetch("http://localhost:8080/refresh_token", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((x) => x.json())
+      .then((y) => {
+        setLoading(false);
+        // For My UI
+        if (y.ok) {
+          setIsLogin(true);
+        }
 
-function App() {
-  const { isLogin } = useAuthValue();
+        // For Apollo
+        setAccessToken(y.accessToken.token);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  }, [setIsLogin]);
 
-  return (
-    <BrowserRouter>
-      <div>
-        <NavBar />
-        <Switch>
-          <Route exact path="/add_blouse">
-            {isLogin ? <AddBlouse /> : <Redirect to="/signin" />}
-          </Route>
-          <Route exact path="/display_blouses">
-            {isLogin ? <DisplayBlouse /> : <Redirect to="/signin" />}
-          </Route>
-          <Route exact path="/signin">
-            {!isLogin ? <SignIn /> : <Redirect to="/display_blouses" />}
-          </Route>
-          <Route exact path="/signup">
-            {!isLogin ? <SignUp /> : <Redirect to="/display_blouses" />}
-          </Route>
-        </Switch>
-      </div>
-    </BrowserRouter>
-  );
-}
+  if (loading) {
+    return <div>loading...</div>;
+  }
+
+  return <Routes />;
+};
 
 export default App;

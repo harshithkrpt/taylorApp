@@ -12,7 +12,9 @@ const GET_BLICE = gql`
 `;
 
 function DisplayBlouse() {
-  const { loading, error, data } = useQuery(GET_BLICE);
+  const { loading, error, data } = useQuery(GET_BLICE, {
+    fetchPolicy: "network-only",
+  });
 
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
