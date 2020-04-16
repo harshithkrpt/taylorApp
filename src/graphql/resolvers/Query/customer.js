@@ -1,7 +1,10 @@
 const Customer = require("../../../models/Customer");
 
 const customerQuery = {
-  getCustomer: async (_, { userId, searchTerm, customerId }) => {
+  getCustomer: async (_, { userId, searchTerm, customerId }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     let customer;
     try {
       if (customerId) {

@@ -64,12 +64,18 @@ exports.authMutation = {
       };
     }
   },
-  logout: (_, __, { res }) => {
+  logout: (_, __, { req, res }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     // Auth CheckUp
     sendRefreshToken(res, "");
     return true;
   },
-  revokeRefreshTokensForUsers: async (_, { userId }) => {
+  revokeRefreshTokensForUsers: async (_, { userId }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     // Auth CheckUp
     try {
       const user = await User.findOne({ _id: userId });

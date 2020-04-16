@@ -1,7 +1,10 @@
 const Customer = require("../../../models/Customer");
 
 const customerMutation = {
-  addCustomer: async (_, { customerInput }) => {
+  addCustomer: async (_, { customerInput }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     let phoneNo = +customerInput.phoneNo;
     const customer = await Customer.findOne({
       phoneNo,
@@ -24,7 +27,10 @@ const customerMutation = {
       return null;
     }
   },
-  deleteCustomer: async (_, { _id }) => {
+  deleteCustomer: async (_, { _id }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     try {
       // TODO DELETE THE MEASUREMENTS TOO
       await Customer.findByIdAndDelete({ _id });
@@ -33,7 +39,10 @@ const customerMutation = {
       return false;
     }
   },
-  updateCustomer: async (_, { _id, customerInput }) => {
+  updateCustomer: async (_, { _id, customerInput }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     try {
       const customer = await Customer.findByIdAndUpdate(
         { _id },

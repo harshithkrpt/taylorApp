@@ -1,7 +1,10 @@
 const ItemDate = require("../../../models/ItemDate");
 
 const itemDateMutation = {
-  addItemDate: async (_, args) => {
+  addItemDate: async (_, args, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     const receivedDate = new Date(args.receivedDate);
     const returnDate = new Date(args.returnDate);
     try {

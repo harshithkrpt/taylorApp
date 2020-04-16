@@ -1,7 +1,10 @@
 const Item = require("../../../models/Item");
 
 const itemMutation = {
-  addItem: async (_, { itemInput }) => {
+  addItem: async (_, { itemInput }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     try {
       let item = await Item.findOne({ title: itemInput.title });
       if (item) {
@@ -14,7 +17,10 @@ const itemMutation = {
       return false;
     }
   },
-  updateItem: async (_, { _id, itemInput }) => {
+  updateItem: async (_, { _id, itemInput }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     try {
       await Item.findByIdAndUpdate({ _id }, { ...itemInput });
       return true;

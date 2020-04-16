@@ -2,7 +2,10 @@ const Measurement = require("../../../models/Measurement");
 const Customer = require("../../../models/Customer");
 
 const measurementMutation = {
-  addMeasurement: async (_, { measurementInput, _id }) => {
+  addMeasurement: async (_, { measurementInput, _id }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     try {
       const customer = await Customer.findOne({
         _id,
@@ -35,7 +38,10 @@ const measurementMutation = {
       return null;
     }
   },
-  updateMeasurement: async (_, { _id, measurementInput }) => {
+  updateMeasurement: async (_, { _id, measurementInput }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
     try {
       const measurement = await Measurement.findOneAndUpdate(
         { _id },
