@@ -81,7 +81,6 @@ const client = new ApolloClient({
         });
       },
       handleFetch: (accessToken) => {
-        console.log("Handle Fetch :", accessToken);
         setAccessToken(accessToken.token);
       },
       handleError: (err) => {
