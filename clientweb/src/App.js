@@ -17,10 +17,9 @@ const App = () => {
         // For My UI
         if (y.ok) {
           setIsLogin(true);
+          // For Apollo
+          setAccessToken(y.accessToken.token);
         }
-
-        // For Apollo
-        setAccessToken(y.accessToken.token);
       })
       .catch((e) => {
         setLoading(false);

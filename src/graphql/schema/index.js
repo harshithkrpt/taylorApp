@@ -5,6 +5,7 @@ module.exports = gql`
     blouses: [Blouse]!
     # Customer
     getCustomer(userId: ID!, searchTerm: String, customerId: ID): Customer!
+    getCustomers(userId: ID!): [Customer!]!
   }
 
   type Mutation {
@@ -87,7 +88,7 @@ module.exports = gql`
     name: String!
     email: String
     phoneNo: String!
-    userId: ID
+    userId: ID!
   }
 
   input UpdatedCustomerInput {

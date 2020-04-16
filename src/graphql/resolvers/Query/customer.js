@@ -23,6 +23,25 @@ const customerQuery = {
       return null;
     }
   },
+  getCustomers: async (_, { userId }, { req }) => {
+    if (!req.isAuth) {
+      return null;
+    }
+    let customers = [];
+    try {
+      customers = await Customer.find({ userId }).limit(20);
+      customers = customers.map((customer) => {
+        return {
+          ...customer._doc,
+          _id: customer.id,
+        };
+      });
+      return customers;
+    } catch (e) {
+      console.log(e);
+      return customers;
+    }
+  },
 };
 
 module.exports = {

@@ -28,6 +28,7 @@ const startServer = async () => {
 
   app.post("/refresh_token", async (req, res) => {
     const token = req.cookies.jid;
+
     if (!token) {
       return res.json({ ok: false, accessToken: "" });
     }
@@ -40,7 +41,8 @@ const startServer = async () => {
       return res.json({ ok: false, accessToken: "" });
     }
 
-    const user = User.findOne({ id: payload.userId });
+    const user = await User.findOne({ _id: payload.userId });
+
     if (!user) {
       return res.json({ ok: false, accessToken: "" });
     }
@@ -50,7 +52,6 @@ const startServer = async () => {
     }
 
     sendRefreshToken(res, createRefreshToken(user));
-
     return res.send({ ok: true, accessToken: createAccessToken(user) });
   });
 

@@ -2,9 +2,10 @@ const Customer = require("../../../models/Customer");
 
 const customerMutation = {
   addCustomer: async (_, { customerInput }, { req }) => {
-    if (!req.isAuth) {
-      return null;
-    }
+    if (("Auth", req.isAuth))
+      if (!req.isAuth) {
+        return null;
+      }
     let phoneNo = +customerInput.phoneNo;
     const customer = await Customer.findOne({
       phoneNo,
