@@ -13,7 +13,6 @@ export const ADD_CUSTOMER = gql`
       _id
       name
       email
-      userId
       phoneNo
       userId
     }
@@ -27,6 +26,28 @@ export const GET_CUSTOMERS = gql`
       name
       email
       phoneNo
+      userId
+    }
+  }
+`;
+
+export const DELETE_CUSTOMER = gql`
+  mutation($_id: ID!) {
+    deleteCustomer(_id: $_id)
+  }
+`;
+
+export const UPDATE_CUSTOMER = gql`
+  mutation($_id: ID!, $name: String, $email: String, $phoneNo: String) {
+    updateCustomer(
+      _id: $_id
+      customerInput: { name: $name, email: $email, phoneNo: $phoneNo }
+    ) {
+      _id
+      name
+      email
+      phoneNo
+      userId
     }
   }
 `;

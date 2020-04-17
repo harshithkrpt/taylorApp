@@ -5,7 +5,7 @@ import { getUserId } from "../../utils/getUserId";
 
 import { ADD_CUSTOMER, GET_CUSTOMERS } from "../../queries/customer";
 
-const AddCustomer = () => {
+const AddCustomer = (props) => {
   const [addCustomer] = useMutation(ADD_CUSTOMER);
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -32,6 +32,7 @@ const AddCustomer = () => {
             getCustomers: [...oldData.getCustomers, data.addCustomer],
           },
         });
+        props.history.push("/display_customers");
       },
     });
   };

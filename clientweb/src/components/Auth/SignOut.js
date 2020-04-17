@@ -12,9 +12,10 @@ const SIGNOUT = gql`
 
 const SignOut = (props) => {
   const { setIsLogin } = useAuthValue();
-  const [signout] = useMutation(SIGNOUT);
+  const [signout, { client }] = useMutation(SIGNOUT);
   const handleSignout = async (e) => {
     // TODO Remove State if ANY
+    client.resetStore();
     await signout();
     setIsLogin(false);
     setAccessToken("");

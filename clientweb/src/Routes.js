@@ -35,10 +35,10 @@ function Routes() {
             {isLogin ? <DisplayCustomers /> : <Redirect to="/signin" />}
           </Route>
           <Route exact path="/signin">
-            {!isLogin ? <SignIn /> : <Redirect to="/display_blouses" />}
+            {!isLogin ? <SignIn /> : <Redirect to="/" />}
           </Route>
           <Route exact path="/signup">
-            {!isLogin ? <SignUp /> : <Redirect to="/display_blouses" />}
+            {!isLogin ? <SignUp /> : <Redirect to="/" />}
           </Route>
         </Switch>
       </div>
