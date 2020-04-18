@@ -5,8 +5,9 @@ import { getUserId } from "../../utils/getUserId";
 
 import { GET_CUSTOMERS, DELETE_CUSTOMER } from "../../queries/customer";
 import UpdateCustomer from "./UpdateCustomer";
+import Measurement from "./Measurement";
 
-const DisplayCustomers = () => {
+const Customers = () => {
   const userId = getUserId();
 
   const { data, loading } = useQuery(GET_CUSTOMERS, {
@@ -64,7 +65,10 @@ const DisplayCustomers = () => {
   return (
     <div>
       {data.getCustomers.map((customer) => (
-        <div key={customer._id}>
+        <div
+          style={{ border: "1px solid black", padding: 20 }}
+          key={customer._id}
+        >
           <h1>{customer.name}</h1>
           <button
             onClick={(e) => {
@@ -80,6 +84,11 @@ const DisplayCustomers = () => {
           >
             up
           </button>
+
+          <Measurement
+            customerId={customer._id}
+            measurementId={customer.measurementId}
+          />
         </div>
       ))}
 
@@ -96,4 +105,4 @@ const DisplayCustomers = () => {
   );
 };
 
-export default DisplayCustomers;
+export default Customers;

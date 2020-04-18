@@ -15,6 +15,7 @@ export const ADD_CUSTOMER = gql`
       email
       phoneNo
       userId
+      measurementId
     }
   }
 `;
@@ -27,6 +28,7 @@ export const GET_CUSTOMERS = gql`
       email
       phoneNo
       userId
+      measurementId
     }
   }
 `;
@@ -48,6 +50,7 @@ export const UPDATE_CUSTOMER = gql`
       email
       phoneNo
       userId
+      measurementId
     }
   }
 `;

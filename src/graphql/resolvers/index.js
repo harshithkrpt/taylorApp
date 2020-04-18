@@ -7,11 +7,13 @@ const { customerQuery } = require("../resolvers/Query/customer");
 const { itemTypeMutation } = require("../resolvers/Mutation/item-type");
 const { itemDateMutation } = require("../resolvers/Mutation/item-date");
 const { itemMutation } = require("../resolvers/Mutation/item");
+const { measurementQuery } = require("./Query/measurement");
 
 module.exports = {
   Query: {
     ...blouseQuery,
     ...customerQuery,
+    ...measurementQuery,
   },
   Mutation: {
     ...authMutation,

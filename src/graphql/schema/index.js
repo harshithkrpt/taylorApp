@@ -6,6 +6,7 @@ module.exports = gql`
     # Customer
     getCustomer(userId: ID!, searchTerm: String, customerId: ID): Customer!
     getCustomers(userId: ID!): [Customer!]!
+    getMeasurement(customerId: ID, measurementId: ID): Measurement!
   }
 
   type Mutation {

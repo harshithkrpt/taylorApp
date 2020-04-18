@@ -12,7 +12,7 @@ import AddBlouse from "./components/Blouse/AddBlouse";
 
 import { useAuthValue } from "./context/AuthContext";
 import AddCustomer from "./components/Customer/AddCustomer";
-import DisplayCustomers from "./components/Customer/DisplayCustomers";
+import Customers from "./components/Customer/Customers";
 
 function Routes() {
   const { isLogin } = useAuthValue();
@@ -32,7 +32,7 @@ function Routes() {
             {isLogin ? <AddCustomer /> : <Redirect to="/signin" />}
           </Route>
           <Route exact path="/display_customers">
-            {isLogin ? <DisplayCustomers /> : <Redirect to="/signin" />}
+            {isLogin ? <Customers /> : <Redirect to="/signin" />}
           </Route>
           <Route exact path="/signin">
             {!isLogin ? <SignIn /> : <Redirect to="/" />}

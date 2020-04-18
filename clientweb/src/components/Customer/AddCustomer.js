@@ -20,7 +20,6 @@ const AddCustomer = (props) => {
     await addCustomer({
       variables: { name, email, phoneNo, userId },
       update: (store, { data }) => {
-        console.log(data);
         const oldData = store.readQuery({
           query: GET_CUSTOMERS,
           variables: { userId },
@@ -32,7 +31,6 @@ const AddCustomer = (props) => {
             getCustomers: [...oldData.getCustomers, data.addCustomer],
           },
         });
-        props.history.push("/display_customers");
       },
     });
   };
